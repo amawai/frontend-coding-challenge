@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import SearchParams from './components/SearchParams';
-import { BottleCard } from './components/BottleCard';
+import { getDrinks } from './actions/coveoApiActions.js';
+
 import './App.css';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.getDrinks();
+  }
   render() {
+    const { products } = this.props;
     return (
       <div className="App">
         <SearchParams
-          cards={{...mockData}}/>
-        
+          cards={products}/>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    products: state.drinkApiReducer.products
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getDrinks: () => {
+      dispatch(getDrinks('lol'));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
 
 
 const mockData = 
